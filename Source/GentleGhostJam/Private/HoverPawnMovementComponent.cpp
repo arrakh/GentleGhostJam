@@ -6,12 +6,13 @@
 UHoverPawnMovementComponent::UHoverPawnMovementComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	bApplyGravity = true;
+	bApplyGravity = false;
 	GravityScale = 1.f;
 	MaxSpeed = 600.f;
 	Acceleration = 2000.f;
 	Deceleration = 4000.f;
 	TurningBoost = 4.f;
+	bShowDebugInfo = false;
 }
 
 void UHoverPawnMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
@@ -37,9 +38,11 @@ void UHoverPawnMovementComponent::TickComponent(float DeltaTime, ELevelTick Tick
 			// Apply gravity to the velocity
 			FVector Gravity(0.f, 0.f, GetGravityZ());
 			Velocity += Gravity * GravityScale * DeltaTime;
-			if (GEngine)
+#if !UE_BUILD_SHIPPING
+			if (GEngine && bShowDebugInfo)
 				GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Green, FString::Printf(TEXT("Gravity velocity: %s"), *Velocity.ToString()));
 		}
+#endif
 
 		// Apply velocity to actor
 		// @see APawn::AddMovementInput()
@@ -56,8 +59,10 @@ void UHoverPawnMovementComponent::TickComponent(float DeltaTime, ELevelTick Tick
 			if (Hit.IsValidBlockingHit())
 			{
 				HandleImpact(Hit, DeltaTime, Delta);
-				if (GEngine)
+#if !UE_BUILD_SHIPPING
+				if (GEngine && bShowDebugInfo)
 					GEngine->AddOnScreenDebugMessage(2, 2.f, FColor::Green, FString::Printf(TEXT("Hit location: %s"), *Hit.Location.ToString()));
+#endif
 				// Try to slide the remaining distance along the surface.
 				SlideAlongSurface(Delta, 1.f - Hit.Time, Hit.Normal, Hit);
 			}
@@ -69,8 +74,10 @@ void UHoverPawnMovementComponent::TickComponent(float DeltaTime, ELevelTick Tick
 		}
 		// Finalize
 		UpdateComponentVelocity();
-		if (GEngine)
+#if !UE_BUILD_SHIPPING
+		if (GEngine && bShowDebugInfo)
 			GEngine->AddOnScreenDebugMessage(2, 2.f, FColor::Green, FString::Printf(TEXT("Delta location: %s"), *Delta.ToString()));
+#endif
 	}
 
 }

@@ -42,13 +42,18 @@ public:
 	float TurningBoost;
 
 protected:
-	// Whether gravity should be applied to the movement component.
+	// Whether gravity should be applied to the movement component. Turn this off to disable gravity calculations in the MovementComponent.
+	// (Gravity still needs to be turned off on actor's Root component.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pawn Movement")
 	uint8 bApplyGravity:1;
 
 	// Custom gravity scale, used to multiply with gravity.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pawn Movement", meta = (ClampMin = "0", UIMin = "0", ClampMax = "100.0", UIMax = "100.0"))
 	float GravityScale;
+
+	// Whether gravity should be applied to the movement component.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pawn Movement|Debug")
+	uint8 bShowDebugInfo : 1;
 
 	/** Update Velocity based on input. Also applies gravity. */
 	virtual void ApplyControlInputToVelocity(float DeltaTime);
