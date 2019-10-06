@@ -42,8 +42,8 @@ public:
 	float TurningBoost;
 
 protected:
-	// Whether gravity should be applied to the movement component. Turn this off to disable gravity calculations in the MovementComponent.
-	// (Gravity still needs to be turned off on actor's Root component.
+	// Whether gravity should be applied to the movement component. *This should NOT be manually configured for each actor, instead use the inherited CanMove flag
+	// (Gravity still needs to be turned off on actor's Root component.)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pawn Movement")
 	uint8 bApplyGravity:1;
 
