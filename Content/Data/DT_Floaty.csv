@@ -1,0 +1,4 @@
+,Text,Delay
+test1,This text appears at 1 second,1
+test2,This text appears 5 seconds after the last one!,5
+test3,"And now, it has been 2 seconds since the previous text~",2
